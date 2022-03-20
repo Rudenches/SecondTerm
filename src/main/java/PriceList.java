@@ -6,15 +6,17 @@ import java.util.Map;
 
 public class PriceList {
         Map<Integer, Product> productPrices = new HashMap<>();
-        private int id = 0;
-        public void add(String name, String price) {
-            productPrices.put(id++, new Product(name,price));
+//        private int id = 0;
+        public void add(int id, String name, Double price) {
+//          if (price < 0.0) throw new IllegalArgumentException();
+            productPrices.put(id, new Product(name,price));
         }
 
-            public String getPrice(int id) {
-            if (productPrices.containsKey(id))
+            public double getPrice(int id) {
+            if (!productPrices.containsKey(id)) throw new IllegalArgumentException();
+            if ((productPrices.get(id)).getPrice() == null ) throw new IllegalArgumentException();
+            if(((productPrices.get(id)).getPrice() < 0.0)) throw new IllegalArgumentException();
                 return (productPrices.get(id)).getPrice();
-            throw new IllegalArgumentException();
             }
 
             public String getName(int id) {
@@ -23,21 +25,21 @@ public class PriceList {
             throw new IllegalArgumentException();
             }
 
-        public void priceReplace(int id, String price) {
-            if (productPrices.containsKey(id))
-            (productPrices.get(id)).setPrice(price);
-            else throw new IllegalArgumentException();
+        public void priceReplace(int id, double price) {
+            if (!productPrices.containsKey(id)) throw new IllegalArgumentException();
+             (productPrices.get(id)).setPrice(price);
+
         }
 
         public void nameReplace (int id, String name) {
-            if (productPrices.containsKey(id))
+            if (!productPrices.containsKey(id)) throw  new IllegalArgumentException();
             (productPrices.get(id)).setName(name);
-            else throw  new IllegalArgumentException();
+
         }
 
         public void delete(int id) {
             if(!productPrices.containsKey(id)) throw new IllegalArgumentException();
-            else productPrices.remove(id);
+             productPrices.remove(id);
         }
 
         public int getId(String name)  {
@@ -53,10 +55,13 @@ public class PriceList {
             return productPrices.get(id);
         }
 
-        public Double goodsCost (int id, int quanity) {
-            if(productPrices.containsKey(id))
-         return Double.parseDouble(productPrices.get(id).getPrice())*quanity;
-            else throw new IllegalArgumentException();
+        public double goodsCost (int id, int quanity) {
+//            if(productPrices.containsKey(id))
+//         return Double.parseDouble(productPrices.get(id).getPrice())*quanity;
+//            else throw new IllegalArgumentException();
+
+            if(!productPrices.containsKey(id)) throw new IllegalArgumentException();
+                return productPrices.get(id).getPrice() * quanity;
         }
     }
 

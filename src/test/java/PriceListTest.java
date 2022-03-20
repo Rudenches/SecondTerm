@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
@@ -6,56 +7,56 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PriceListTest {
+    private  final PriceList priceList = new PriceList();
+    @BeforeEach
+    public void setup () {
+        priceList.add(1,"Молоко", 55.0);
+        priceList.add(2,"Хлеб",25.5);
+        priceList.add (3, "Шоколад", 125.54);
+        priceList.add(4,"Торт",353.90);
+        priceList.add(5,"Молоко",90.0);
+        priceList.add(6,"Чай", -45.0);
+
+    }
     @Test
     void main() {
     }
     @Test
     void getIdTest() {
-        PriceList pricelist = new PriceList();
-        pricelist.add("Молоко", "10.54");
-        assertThrows(IllegalArgumentException.class,  () -> {pricelist.getId("Чай");});
+        assertThrows(IllegalArgumentException.class,  () -> {priceList.getId("Кекс");});
     }
     @Test
     void addTest() {
-        PriceList pricelist = new PriceList();
-        pricelist.add("Молоко", "10.54");
-        assertEquals("10.54", pricelist.getProduct(pricelist.getId("Молоко")).getPrice());
+        assertEquals(55.0, priceList.getPrice(1));
+
     }
     @Test
     void priceReplaceTest() {
-        PriceList pricelist = new PriceList();
-        pricelist.add( "Молоко", "56.0");
-        pricelist.priceReplace(pricelist.getId("Молоко"),  "50.00");
-        assertEquals("50.00",pricelist.getPrice(pricelist.getId("Молоко")));
-        assertThrows(IllegalArgumentException.class, () -> {pricelist.getPrice(pricelist.getId("Яблоко"));});
+
+        priceList.priceReplace(5,  110.0);
+        assertEquals(110.00,priceList.getPrice(5));
+        assertThrows(IllegalArgumentException.class, () -> priceList.priceReplace(7, 150.0));
     }
     @Test
     void nameReplaceTest() {
-        PriceList pricelist = new PriceList();
-        pricelist.add("Молоко", "56.25");
-        pricelist.nameReplace(pricelist.getId("Молоко"), "Яблоко");
-        assertEquals("Яблоко",pricelist.getName(pricelist.getId("Яблоко")));
-        assertThrows(IllegalArgumentException.class, () -> {pricelist.getName(pricelist.getId("Чай"));});
+        priceList.nameReplace(1, "Яблоко");
+        assertEquals("Яблоко",priceList.getName(1));
+        assertThrows(IllegalArgumentException.class, () -> priceList.nameReplace(7, "Яблоко"));
     }
     @Test
     void deleteTest() {
-        PriceList pricelist = new PriceList();
-        pricelist.add("Молоко", "56.15");
-        pricelist.add("Хлеб", "10.20");
-        pricelist.delete(pricelist.getId("Молоко"));
+        priceList.delete(3);
        assertThrows(IllegalArgumentException.class, () ->
-            pricelist.getId("Молоко"));
-        assertThrows(IllegalArgumentException.class,
-                () -> {pricelist.productPrices.containsKey(pricelist.getId("Молоко"));});
-        assertThrows(IllegalArgumentException.class, () -> {pricelist.getId("Чай");});
+            priceList.getName(3));
+       assertThrows(IllegalArgumentException.class, () -> priceList.delete(7));
+
+
     }
     @Test
     void goodsCostTest() {
-        PriceList pricelist = new PriceList();
-        pricelist.add("Хлеб", "20.50");
-        pricelist.goodsCost(pricelist.getId("Хлеб"),5);
-        assertEquals(102.5, pricelist.goodsCost(pricelist.getId("Хлеб"),5));
-        assertThrows(IllegalArgumentException.class, () -> {pricelist.getId("Масло");});
+//        priceList.goodsCost(1,5);
+        assertEquals(275.0, priceList.goodsCost(1,5));
+        assertThrows(IllegalArgumentException.class, () -> priceList.goodsCost(7,5));
     }
     @Test
     void getId() {
@@ -65,22 +66,18 @@ class PriceListTest {
     }
     @Test
     void getName() {
-        PriceList pricelist = new PriceList();
-        pricelist.add("Молоко", "56.15");
-        pricelist.getName(pricelist.getId("Молоко"));
-        assertEquals("Молоко",pricelist.getName(pricelist.getId("Молоко")));
-        assertThrows(IllegalArgumentException.class, () -> {pricelist.getId("Хлеб");});
+        assertEquals("Хлеб",priceList.getName(2));
+        assertThrows(IllegalArgumentException.class, () -> priceList.getName(0));
     }
     @Test
     void setName() {
     }
     @Test
     void getPrice() {
-        PriceList pricelist = new PriceList();
-        pricelist.add("Молоко", "56.74");
-        pricelist.getPrice(pricelist.getId("Молоко"));
-        assertEquals("56.74",pricelist.getPrice(pricelist.getId("Молоко")));
-        assertThrows(IllegalArgumentException.class, () -> {pricelist.getId("Хлеб");});
+        assertEquals(90.0,priceList.getPrice(5));
+        assertThrows(IllegalArgumentException.class, () -> priceList.getPrice(8));
+        assertThrows(IllegalArgumentException.class, () -> priceList.getPrice(6));
+//        assertThrows(IllegalArgumentException.class, () -> priceList.getPrice(null);
     }
     @Test
     void setPrice() {

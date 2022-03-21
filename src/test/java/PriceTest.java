@@ -2,21 +2,21 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProductTest {
+class PriceTest {
 
     @Test
-    void getName() {
+    void getRub() {
     }
 
     @Test
-    void setName() {
+    void getKopek() {
     }
 
     @Test
-    void getPrice() {
+    void setRub() {
     }
 
     @Test
-    void setPrice() {
+    void setKopek() {
     }
 }
